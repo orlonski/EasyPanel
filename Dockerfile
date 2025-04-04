@@ -3,11 +3,15 @@ FROM debian:latest
 # Instalar pacotes necessários
 RUN apt update && apt install -y curl unzip
 
-# Baixar e instalar EasyPanel
-RUN curl -fsSL https://easypanel.io/install.sh | sh
+# Criar diretório para o EasyPanel
+WORKDIR /easypanel
 
-# Expor a porta usada pelo EasyPanel
+# Baixar e instalar EasyPanel manualmente
+RUN curl -L https://github.com/easypanel-io/easypanel/releases/latest/download/easypanel-linux-amd64 -o easypanel \
+    && chmod +x easypanel
+
+# Expor a porta do EasyPanel
 EXPOSE 3000
 
-# Comando para iniciar o EasyPanel
-CMD ["easypanel", "start"]
+# Iniciar o EasyPanel
+CMD ["./easypanel", "start"]
